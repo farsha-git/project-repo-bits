@@ -1,28 +1,21 @@
 version: 0.2
 
-env:
-  variables:
-    NODE_ENV: production
-
 phases:
   install:
     commands:
-      - echo "Installing Node.js 18"
-      - curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
-      - yum install -y nodejs
+      - echo "Install phase: Node is already available."
       - node -v
       - npm -v
 
   pre_build:
     commands:
-      - echo "Installing dependencies for backend..."
+      - echo "Installing backend dependencies..."
       - cd lost-and-found-backend
       - npm install
-      - echo "Generating Prisma client..."
       - npx prisma generate
       - cd ..
 
-      - echo "Installing dependencies for frontend..."
+      - echo "Installing frontend dependencies..."
       - cd lost-and-found-frontend
       - npm install
       - cd ..
@@ -31,7 +24,7 @@ phases:
     commands:
       - echo "Building backend..."
       - cd lost-and-found-backend
-      - npm run build || echo "No backend build script found."
+      - npm run build || echo "No backend build step defined."
       - cd ..
 
       - echo "Building frontend..."
@@ -41,7 +34,7 @@ phases:
 
   post_build:
     commands:
-      - echo "Build completed successfully!"
+      - echo "Build completed successfully."
 
 artifacts:
   files:
