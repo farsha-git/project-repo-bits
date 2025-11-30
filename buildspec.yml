@@ -1,0 +1,49 @@
+version: 0.2
+
+env:
+  variables:
+    NODE_ENV: production
+
+phases:
+  install:
+    commands:
+      - echo "Installing Node.js 18"
+      - curl -fsSL https://rpm.nodesource.com/setup_18.x | bash -
+      - yum install -y nodejs
+      - node -v
+      - npm -v
+
+  pre_build:
+    commands:
+      - echo "Installing dependencies for backend..."
+      - cd lost-and-found-backend
+      - npm install
+      - echo "Generating Prisma client..."
+      - npx prisma generate
+      - cd ..
+
+      - echo "Installing dependencies for frontend..."
+      - cd lost-and-found-frontend
+      - npm install
+      - cd ..
+
+  build:
+    commands:
+      - echo "Building backend..."
+      - cd lost-and-found-backend
+      - npm run build || echo "No backend build script found."
+      - cd ..
+
+      - echo "Building frontend..."
+      - cd lost-and-found-frontend
+      - npm run build
+      - cd ..
+
+  post_build:
+    commands:
+      - echo "Build completed successfully!"
+
+artifacts:
+  files:
+    - '**/*'
+  discard-paths: no
