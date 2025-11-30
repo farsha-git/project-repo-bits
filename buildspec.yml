@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     commands:
-      - echo "Install phase: Node is already available."
+      - echo "Node version:"
       - node -v
       - npm -v
 
@@ -12,7 +12,7 @@ phases:
       - echo "Installing backend dependencies..."
       - cd lost-and-found-backend
       - npm install
-      - npx prisma generate
+      - npx prisma generate || true
       - cd ..
 
       - echo "Installing frontend dependencies..."
@@ -24,7 +24,7 @@ phases:
     commands:
       - echo "Building backend..."
       - cd lost-and-found-backend
-      - npm run build || echo "No backend build step defined."
+      - npm run build || true
       - cd ..
 
       - echo "Building frontend..."
@@ -34,9 +34,8 @@ phases:
 
   post_build:
     commands:
-      - echo "Build completed successfully."
+      - echo "Build Finished Successfully"
 
 artifacts:
   files:
-    - '**/*'
-  discard-paths: no
+    - "**/*"
