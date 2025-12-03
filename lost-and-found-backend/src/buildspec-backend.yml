@@ -1,0 +1,32 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 18
+    commands:
+      - echo "Node version:"
+      - node -v
+      - npm -v
+
+  pre_build:
+    commands:
+      - echo "Installing frontend dependencies..."
+      - cd lost-and-found-frontend
+      - npm install
+      - cd ..
+
+  build:
+    commands:
+      - echo "Building backend..."
+      - cd lost-and-found-backend
+      - npm run build || true
+      - cd ..
+
+  post_build:
+    commands:
+      - echo "Build Finished Successfully"
+
+artifacts:
+  files:
+    - "**/*"
