@@ -1,0 +1,25 @@
+version: 0.2
+ 
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo Installing frontend dependencies...
+      - cd lost-and-found-frontend
+      - npm install
+ 
+  build:
+    commands:
+      - echo Building frontend...
+      - npm run build
+ 
+  post_build:
+    commands:
+      - echo Deploying frontend to S3...
+      - aws s3 sync ./dist s3://testing-pipeline-in-nva --delete
+      - echo Frontend deployed successfully!
+ 
+artifacts:
+  files:
+    - '**/*'
