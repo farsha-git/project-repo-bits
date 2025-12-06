@@ -1,0 +1,25 @@
+version: 0.2
+ 
+phases:
+  install:
+    runtime-versions:
+      nodejs: 20
+    commands:
+      - echo Installing backend dependencies...
+      - cd lost-and-found-frontend
+      - npm install
+ 
+  build:
+    commands:
+      - echo Building backend...
+      - npm run build
+ 
+  post_build:
+    commands:
+      - echo Deploying backend to ecr...
+      - aws ecr sync ./dist ecr://test/lost-found
+      - echo backend deployed successfully!
+ 
+artifacts:
+  files:
+    - '**/*'
